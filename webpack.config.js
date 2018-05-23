@@ -65,20 +65,20 @@ module.exports = (env, argv) => {
                             loader: 'css-loader',
                             options: {
                                 importLoaders: 1,
-                                sourceMap: true,
+                                sourceMap: devMode ? true : false,
                             },
                         },
                         {
                             loader: 'postcss-loader',
                             options: {
-                                sourceMap: true,
+                                sourceMap: devMode ? true : false,
                                 plugins: () => [autoprefixer],
                             },
                         },
                         {
                             loader: 'sass-loader',
                             options: {
-                                sourceMap: true,
+                                sourceMap: devMode ? true : false,
                             },
                         },
                     ],
