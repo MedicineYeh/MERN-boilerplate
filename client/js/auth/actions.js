@@ -1,19 +1,17 @@
-import axios from 'axios';
+import axios from 'src/common/myAxios';
 import {push} from 'react-router-redux';
 
 import * as t from 'src/user/actionTypes';
-import {ok,fail} from 'src/common/actionHelpers';
+import {ok, fail} from 'src/common/actionHelpers';
 
 const authAction = (type, response) => ({type: type, payload: response.data});
 const authError = (type, response) => ({type: type, payload: response.data.error});
 
 export function reAuthenticate(token, redirectTo) {
+    if (typeof token !== 'string') throw Error('invalid argument: token must be a string');
+
     return (dispatch) => {
-        axios.get('/api/auth/me', {
-            headers: {
-                authorization: token,
-            },
-        }).then((response) => {
+        axios.post('/api/reauth', {token}).then((response) => {
             dispatch(authAction(ok(t.REAUTH_USER), response));
             if (redirectTo) dispatch(push(redirectTo));
         }).catch((err) => dispatch(authError(fail(t.REAUTH_USER), err.response)));

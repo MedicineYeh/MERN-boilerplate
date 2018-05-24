@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'src/common/myAxios';
 
 import * as t from './actionTypes';
 import {ok,fail} from 'src/common/actionHelpers';

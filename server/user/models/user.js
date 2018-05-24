@@ -41,5 +41,13 @@ schema.methods.comparePassword = function(candidatePassword, callback) {
     }
 };
 
+schema.methods.removeSensitiveFields = function() {
+    // NOTE: Be very careful to mask out sensitive fields.
+    delete this.password;
+    delete this.__v;
+    delete this.id;
+    delete this._id;
+};
+
 // Create model and export
 module.exports = mongoose.model('user', schema);

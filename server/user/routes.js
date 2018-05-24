@@ -9,7 +9,8 @@ async function fetchUserInfo(req, res, next) {
         if (!userMatched) {
             res.status(401).send({error: 'User not found'});
         } else {
-            respondAuth(res, userMatched);
+            userMatched.removeSensitiveFields();
+            res.json(userMatched);
         }
     } catch (err) {
         next(err);
@@ -17,5 +18,7 @@ async function fetchUserInfo(req, res, next) {
 }
 
 module.exports = (app) => {
-    app.get('/api/auth/me', fetchUserInfo); // auth path is already with verification of jwt
+    // JWT authorization of '/api/auth/' path is automatically handled by middlewares
+    // We only need to verify the permissions if required.
+    app.get('/api/auth/me', fetchUserInfo);
 };

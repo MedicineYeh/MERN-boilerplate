@@ -23,7 +23,7 @@ const WebpackConfigure = require('../webpack.config');
 const auth = require.main.require('./auth');
 const requireAuth = auth.passport.authenticate('jwt', {session: false});
 
-// Configuration
+// Configurations
 // ================================================================================================
 const app = express();
 // Pass mode argument to config
@@ -41,11 +41,19 @@ mongoose.connect(devMode ? config.db_dev : config.db).then(() => {
 app.use(morgan('short')); // Show logs to users
 app.use(bodyParser.urlencoded({extended: true})); // Parse POST contents
 app.use(bodyParser.json()); // Parse POST contents
-app.use('/api/*', nocache); // Disable cache for all api requests
-app.use('/api/auth/*', requireAuth); // Require authentiction on all auth API calls
 
-// Setup timeout of 1 mins for all connections
-app.use(timeout(60 * 1000));
+/* *
+ * NOTE: Important middlewares for this boilerplate!!!
+ * Authorizations are checked through middleware here can
+ * help to prevent attacks of scanning sensitive APIs.
+    * */
+app.use('/api/*', nocache); // Disable cache for all api requests
+app.use('/api/auth/*', requireAuth); // Require authorization on all auth API calls
+
+/* End of important middlewares */
+
+// Setup timeout of 1 hour for all connections
+app.use(timeout(60 * 60 * 1000));
 app.use((req, res, next) => {
     if (!req.timedout) next();
 });

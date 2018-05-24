@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+const jwt = require('jwt-then'); // A wrapper for jsonwebtoken package
 const validator = require('validator');
 const passwordValidator = require('password-validator');
 
@@ -32,7 +32,7 @@ function createCleandUser(user) {
 
 // TODO Show message to user if the session is timeout
 // Define functions for authentication systems
-function tokenForUser(user) {
+function asyncSignJWT(user) {
     return jwt.sign({
         user: createCleandUser(user),
     }, config.JWT_SECRET, {
@@ -41,11 +41,11 @@ function tokenForUser(user) {
     });
 }
 
-function respondAuth(res, user) {
+async function respondAuth(res, user) {
     if (user) {
         res.json({
             user: createCleandUser(user),
-            token: tokenForUser(user),
+            token: await asyncSignJWT(user),
         });
     } else {
         setTimeout(() => {
@@ -107,7 +107,28 @@ async function signup(req, res, next) {
     }
 }
 
+async function reAuthorize(req, res, next) {
+    const {token} = req.body;
+    if (typeof token !== 'string') res.status(401).send({error: 'Unauthorized'});
+    try {
+        // Why does this pending so long....
+        const user = await jwt.verify(token, config.JWT_SECRET);
+        // Fetch user info from database for the latest result.
+        const userMatched = await User.findById(user.sub);
+
+        if (!userMatched) {
+            res.status(401).send({error: 'Unauthorized'});
+        } else {
+            respondAuth(res, userMatched);
+        }
+    } catch (err) {
+        res.status(401); // Reset status code to 401 for all errors
+        next(err);
+    }
+}
+
 module.exports = (app) => {
     app.post('/api/login', login);
     app.post('/api/signup', signup);
+    app.post('/api/reauth', reAuthorize);
 };

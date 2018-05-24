@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import axios from 'src/common/myAxios';
 
 class Home extends React.Component {
     constructor(props) {
