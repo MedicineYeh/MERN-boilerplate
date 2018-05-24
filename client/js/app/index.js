@@ -7,11 +7,11 @@ import route from './route';
 import history from './history';
 import store from './store';
 
-import {reAuthenticate} from 'src/auth/actions';
+import {reAuthorize} from 'src/auth/actions';
 
 // Setup user token if exist at the page load
 if (localStorage.getItem('jwtToken')) {
-    store.dispatch(reAuthenticate(localStorage.getItem('jwtToken')));
+    store.dispatch(reAuthorize(localStorage.getItem('jwtToken')));
 }
 
 const App = () => (

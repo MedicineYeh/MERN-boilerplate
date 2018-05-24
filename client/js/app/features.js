@@ -6,7 +6,7 @@ import Login from './Login';
 import Logout from './Logout';
 import Signup from './Signup';
 
-/* Basic permission pages */
+/* Pages require basic permission */
 import SamplePage from './SamplePage';
 
 export default [

@@ -7,7 +7,7 @@ import {ok, fail} from 'src/common/actionHelpers';
 const authAction = (type, response) => ({type: type, payload: response.data});
 const authError = (type, response) => ({type: type, payload: response.data.error});
 
-export function reAuthenticate(token, redirectTo) {
+export function reAuthorize(token, redirectTo) {
     if (typeof token !== 'string') throw Error('invalid argument: token must be a string');
 
     return (dispatch) => {

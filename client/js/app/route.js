@@ -24,6 +24,7 @@ export default () => (
             {/* This can only be viewed with advanced permission */}
             <Route path="/advanced-permission" component={TestWithAdvPerm} />
 
+            {/* Import all routes, permissions are verified in each route */}
             {features.filter((feature) => feature.route).map((feature) => (
                 <Route
                     key={feature.constants.NAME}

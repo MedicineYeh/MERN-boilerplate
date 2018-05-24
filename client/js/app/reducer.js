@@ -8,7 +8,7 @@ const reducers = {};
 features.filter((feature) => feature.reducer).forEach((feature) => {
     reducers[feature.constants.NAME] = feature.reducer;
 });
-// Setup other reducers
+// Setup other routerReducer for history accesses
 reducers.router = routerReducer;
 
 export default combineReducers(reducers);

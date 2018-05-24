@@ -11,37 +11,35 @@ const initialState = {
 };
 
 function userReducerHelper(action, obj) {
-    const t = helper.parseActionType(action);
+    const {stat, act} = helper.parseActionType(action);
 
-    helper.updateObjectState(action, obj);
-
-    if (t.stat === helper.failState && t.act === 'REAUTH') {
+    if (stat === helper.failState && act === 'REAUTH') {
         // Remove out-dated login token and unauthorize the user
         obj.authorized = false;
         obj.permissions = [];
         localStorage.removeItem('jwtToken');
     }
     // If the state code is ok (fulfilled)
-    if (t.stat === helper.okState) {
-        if (t.act === 'AUTH' || t.act === 'REAUTH') {
+    if (stat === helper.okState) {
+        if (act === 'AUTH' || act === 'REAUTH') {
             // Update user info.
             const user = action.payload.user;
-            obj.authorized = true;
-            obj.name = user.name;
-            obj.email = user.email;
-            obj.photo = user.photo;
-            obj.permissions = user.permissions;
+            // Update fields and authorized
+            obj = {...obj, ...user, authorized: true};
             if (action.payload.token) {
                 localStorage.setItem('jwtToken', action.payload.token);
             }
         }
     }
     // Unauthorize never fails, enter for all state codes
-    if (t.act === 'UNAUTH') {
+    if (act === 'UNAUTH') {
         obj.authorized = false;
         obj.permissions = [];
         localStorage.removeItem('jwtToken');
     }
+
+    // Do this at the end to prevent overwriting the contents by programmers
+    helper.updateObjectState(action, obj);
 
     return obj;
 }

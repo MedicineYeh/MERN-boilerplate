@@ -20,9 +20,3 @@ export default class Logout extends React.Component {
         return <div>See you again!</div>;
     }
 }
-
-export const constants = {
-    NAME: 'logout',
-};
-
-export const route = Logout;

@@ -85,9 +85,3 @@ export default class signUpForm extends React.Component {
         );
     }
 }
-
-export const constants = {
-    NAME: 'signup',
-};
-
-export const route = signUpForm;
