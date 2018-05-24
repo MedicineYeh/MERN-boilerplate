@@ -16,14 +16,16 @@ const middlewares = [
     thunk,
     // Intercepting and dispatching navigation actions
     routerMiddleware(history),
+].concat((__DEV__) ? [
+    // The followings are included in development mode only
     createLogger({
         collapsed: (getState, action, logEntry) => !logEntry.error,
         duration: true,
     }),
-];
+] : []);
 
-function configureStore(reducer, initialState) {
-    const store = createStore(reducer, initialState);
+function configureStore(reducer, enhancer) {
+    const store = createStore(reducer, enhancer);
 
     // Enable Webpack hot module replacement for reducers
     if (module.hot) {
