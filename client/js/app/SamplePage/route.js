@@ -6,7 +6,7 @@ import Loadable from '../components/LoadableCircle';
 
 /* This is asynchronous component */
 const route = Loadable({
-    loader: () => import('./SamplePage')
+    loader: () => import('./SamplePage'),
 });
 
 // Verify the permission for viewing this page

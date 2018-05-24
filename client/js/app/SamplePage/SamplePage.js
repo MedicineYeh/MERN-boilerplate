@@ -15,7 +15,7 @@ export default class SamplePage extends React.Component {
         message: PropTypes.string,
     };
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.dispatch(misc.actions.fetchMessage());
     }
 

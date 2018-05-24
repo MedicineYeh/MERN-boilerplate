@@ -12,7 +12,7 @@ export default class Logout extends React.Component {
         dispatch: PropTypes.func,
     };
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.dispatch(auth.actions.logout());
     }
 

@@ -6,7 +6,8 @@ import 'stylesheet/vendor/loading.css';
 const Loading = (props) => {
     const size = (props.size) ? props.size : 10;
     if (props.error) {
-        // NOTE This is required, or error messages will be suppressed by Promise.
+        // NOTE Handling props.error is required, or error messages will be suppressed by Promise.
+        // eslint-disable-next-line no-console
         console.error(props.error);
     } else if (props.pastDelay) {
         return (<div className='loader' style={{fontSize: size + 'px'}} />);

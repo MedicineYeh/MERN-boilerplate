@@ -1,7 +1,7 @@
 import axios from 'src/common/myAxios';
 
 import * as t from './actionTypes';
-import {ok,fail} from 'src/common/actionHelpers';
+import {ok, fail} from 'src/common/actionHelpers';
 
 export function fetchMessage() {
     return (dispatch) => {

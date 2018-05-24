@@ -50,5 +50,6 @@
   },
   "globals": {
     "module": false,
+    "__DEV__": false,
   },
 }

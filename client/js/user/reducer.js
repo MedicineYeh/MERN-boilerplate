@@ -1,4 +1,3 @@
-import * as t from './actionTypes';
 import * as constants from './constants';
 import * as helper from 'src/common/actionHelpers';
 import userModel from './model';
