@@ -41,7 +41,7 @@ export default class LoginForm extends React.Component {
 
     render() {
         const {user} = this.props;
-        if (this.props.user.authorized) {
+        if (user.authorized) {
             return <p>You are logged in as {user.name} already.</p>;
         }
 
