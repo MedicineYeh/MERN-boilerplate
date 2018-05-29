@@ -22,7 +22,10 @@ module.exports = (env, argv) => {
         devtool: devMode ? 'eval-source-map' : false,
         entry: {
             /* Define the entry point 'app' to our main js file. */
-            app: [path.resolve(__dirname, 'client/js/index.js')].concat(devMode ? [hotMiddlewareScript] : []),
+            app: [
+                'babel-polyfill',
+                path.resolve(__dirname, 'client/js/index.js')
+            ].concat(devMode ? [hotMiddlewareScript] : []),
         },
         resolve: {
             extensions: ['.js', '.jsx', '.json', '.css', '.scss', 'sass'],
