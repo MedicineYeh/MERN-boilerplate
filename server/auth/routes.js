@@ -96,11 +96,16 @@ async function signup(req, res, next) {
                 error: 'Email has been used already.',
             });
         } else {
-            // Use 'user' to create Mongoose user object directly.
-            const newUser = new User(user);
-            newUser.save()
-                .then(() => respondAuth(res, newUser))
-                .catch(next);
+            // Assign each fields by hand to prevent injection attack
+            const newUser = new User({
+                email: user.email,
+                password: user.password,
+                name: user.name,
+                photo: user.photo,
+                permissions: ['basic'],
+            });
+            await newUser.save();
+            respondAuth(res, newUser);
         }
     } catch (err) {
         next(err);
