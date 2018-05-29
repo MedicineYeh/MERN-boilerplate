@@ -44,5 +44,5 @@ export function login(user, redirectTo = '/') {
 }
 
 export function logout() {
-    return {type: ok(t.UNAUTH_USER)};
+    return [{type: ok(t.UNAUTH_USER)}, {type: 'CLEAR_STORE'}];
 }

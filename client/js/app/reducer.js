@@ -11,4 +11,21 @@ features.filter((feature) => feature.reducer).forEach((feature) => {
 // Setup other routerReducer for history accesses
 reducers.router = routerReducer;
 
-export default combineReducers(reducers);
+const appReducer = combineReducers(reducers);
+
+// Flush out the (sensitive) data when logged out to prevent
+// data leak when switching between users with different permissions.
+const rootReducer = (state, action) => {
+    if (action.type === 'CLEAR_STORE') {
+        /* Code for handling Redux persist
+        Object.keys(state).forEach((key) => {
+            storage.removeItem(`persist:${key}`);
+        });
+        */
+        state = undefined;
+    }
+
+    return appReducer(state, action);
+};
+
+export default rootReducer;
