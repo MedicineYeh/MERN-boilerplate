@@ -4,42 +4,42 @@ import {push} from 'react-router-redux';
 import * as t from 'src/user/actionTypes';
 import {ok, fail} from 'src/common/actionHelpers';
 
-const authAction = (type, response) => ({type: type, payload: response.data});
-const authError = (type, response) => ({type: type, payload: response.data.error});
-
 export function reAuthorize(token, redirectTo) {
     if (typeof token !== 'string') throw Error('invalid argument: token must be a string');
 
-    return (dispatch) => {
-        axios.post('/api/reauth', {token}).then((response) => {
-            dispatch(authAction(ok(t.REAUTH_USER), response));
+    return async (dispatch) => {
+        try {
+            const response = await axios.post('/api/reauth', {token});
+            dispatch({type: ok(t.REAUTH_USER), payload: response.data});
             if (redirectTo) dispatch(push(redirectTo));
-        }).catch((err) => dispatch(authError(fail(t.REAUTH_USER), err.response)));
+        } catch (err) {
+            dispatch({type: fail(t.REAUTH_USER), payload: err.response.data.error});
+        }
     };
 }
 
 export function signup(user, redirectTo = '/') {
-    return (dispatch) => {
-        axios.post('/api/signup', user).then((response) => {
-            dispatch(authAction(ok(t.AUTH_USER), response));
+    return async (dispatch) => {
+        try {
+            const response = await axios.post('/api/signup', user);
+            dispatch({type: ok(t.AUTH_USER), payload: response.data});
             dispatch(push(redirectTo));
-        }).catch((err) => dispatch(authError(fail(t.AUTH_USER), err.response)));
+        } catch (err) {
+            dispatch({type: fail(t.AUTH_USER), payload: err.response.data.error});
+        }
     };
 }
 
 export function login(user, redirectTo = '/') {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({type: t.AUTH_USER});
-        axios.post('/api/login', user).then((response) => {
-            dispatch(authAction(ok(t.AUTH_USER), response));
+        try {
+            const response = await axios.post('/api/login', user);
+            dispatch({type: ok(t.AUTH_USER), payload: response.data});
             dispatch(push(redirectTo));
-        }).catch((err) => dispatch(
-            authError(fail(t.AUTH_USER), {
-                data: {
-                    error: 'Incorrect username/password',
-                },
-            })
-        ));
+        } catch (err) {
+            dispatch({type: fail(t.AUTH_USER), payload: 'Incorrect username/password'});
+        }
     };
 }
 
