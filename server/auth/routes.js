@@ -96,13 +96,14 @@ async function signup(req, res, next) {
                 error: 'Email has been used already.',
             });
         } else {
+            const userCount = await User.count();
             // Assign each fields by hand to prevent injection attack
             const newUser = new User({
                 email: user.email,
                 password: user.password,
                 name: user.name,
                 photo: user.photo,
-                permissions: ['basic'],
+                permissions: (userCount === 0) ? ['basic', 'advanced'] : ['basic'],
             });
             await newUser.save();
             respondAuth(res, newUser);
