@@ -117,7 +117,6 @@ async function reAuthorize(req, res, next) {
     const {token} = req.body;
     if (typeof token !== 'string') res.status(401).send({error: 'Unauthorized'});
     try {
-        // Why does this pending so long....
         const user = await jwt.verify(token, config.JWT_SECRET);
         // Fetch user info from database for the latest result.
         const userMatched = await User.findById(user.sub);
