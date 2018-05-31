@@ -13,6 +13,8 @@ const schema = new Schema({
     name: {type: String, default: '使用者'},
     photo: {type: String, default: ''},
     permissions: {type: Array, default: ['basic']},
+}, {
+    timestamps: {createdAt: 'createdAt'},
 });
 
 // Hash password before saving to database
